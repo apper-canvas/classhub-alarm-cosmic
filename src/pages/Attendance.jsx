@@ -23,7 +23,7 @@ const Attendance = () => {
     setError(null);
     try {
       const [studentsData, attendanceData] = await Promise.all([
-        studentService.getAll(),
+studentService.getAll(),
         attendanceService.getAll()
       ]);
       setStudents(studentsData);
@@ -40,9 +40,9 @@ const Attendance = () => {
     const dateStr = format(date, 'yyyy-MM-dd');
     
     try {
-      // Find existing attendance record
+// Find existing attendance record
       const existingRecord = attendance.find(
-        record => record.studentId === studentId && record.date === dateStr
+        record => (record.student_id || record.studentId) === studentId && record.date === dateStr
       );
 
       if (existingRecord) {
@@ -58,8 +58,8 @@ const Attendance = () => {
         );
       } else {
         // Create new record
-        const newRecord = await attendanceService.create({
-          studentId,
+const newRecord = await attendanceService.create({
+          student_id: studentId,
           date: dateStr,
           status,
           notes: ''
@@ -77,13 +77,13 @@ const Attendance = () => {
     
     try {
       for (const student of students) {
-        const existingRecord = attendance.find(
-          record => record.studentId === student.id && record.date === dateStr
+const existingRecord = attendance.find(
+          record => (record.student_id || record.studentId) === (student.Id || student.id) && record.date === dateStr
         );
 
         if (!existingRecord) {
-          const newRecord = await attendanceService.create({
-            studentId: student.id,
+const newRecord = await attendanceService.create({
+            student_id: student.Id || student.id,
             date: dateStr,
             status: 'present',
             notes: ''
@@ -110,9 +110,9 @@ const Attendance = () => {
   };
 
   const getAttendanceStatus = (studentId, date) => {
-    const dateStr = format(date, 'yyyy-MM-dd');
+const dateStr = format(date, 'yyyy-MM-dd');
     const record = attendance.find(
-      record => record.studentId === studentId && record.date === dateStr
+      record => (record.student_id || record.studentId) === studentId && record.date === dateStr
     );
     return record?.status || null;
   };
@@ -304,12 +304,11 @@ const Attendance = () => {
                 </tr>
               </thead>
               <tbody className="divide-y divide-surface-200">
-                {students.map((student, index) => {
-                  const currentStatus = getAttendanceStatus(student.id, selectedDate);
-                  
+{students.map((student, index) => {
+                  const currentStatus = getAttendanceStatus(student.Id || student.id, selectedDate);
                   return (
-                    <motion.tr
-                      key={student.id}
+<motion.tr
+                      key={student.Id || student.id}
                       initial={{ opacity: 0, x: -20 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: index * 0.05 }}
@@ -318,16 +317,16 @@ const Attendance = () => {
                       <td className="px-6 py-4">
                         <div className="flex items-center space-x-3">
                           <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
-                            <span className="text-primary font-medium">
-                              {student.firstName[0]}{student.lastName[0]}
+<span className="text-primary font-medium">
+                              {(student.first_name || student.Name || 'U')[0]}{(student.last_name || 'U')[0]}
                             </span>
                           </div>
                           <div>
-                            <div className="font-medium text-surface-900">
-                              {student.firstName} {student.lastName}
+<div className="font-medium text-surface-900">
+                              {student.Name || `${student.first_name || ''} ${student.last_name || ''}`.trim()}
                             </div>
                             <div className="text-sm text-surface-500">
-                              Grade {student.gradeLevel}
+                              Grade {student.grade_level || 'N/A'}
                             </div>
                           </div>
                         </div>
@@ -364,7 +363,7 @@ const Attendance = () => {
                           <StatusButton
                             status="present"
                             currentStatus={currentStatus}
-                            onClick={() => markAttendance(student.id, selectedDate, 'present')}
+onClick={() => markAttendance(student.Id || student.id, selectedDate, 'present')}
                             icon="Check"
                             label="Present"
                             color="bg-success"
@@ -372,7 +371,7 @@ const Attendance = () => {
                           <StatusButton
                             status="late"
                             currentStatus={currentStatus}
-                            onClick={() => markAttendance(student.id, selectedDate, 'late')}
+onClick={() => markAttendance(student.Id || student.id, selectedDate, 'late')}
                             icon="Clock"
                             label="Late"
                             color="bg-warning"
@@ -380,7 +379,7 @@ const Attendance = () => {
                           <StatusButton
                             status="absent"
                             currentStatus={currentStatus}
-                            onClick={() => markAttendance(student.id, selectedDate, 'absent')}
+onClick={() => markAttendance(student.Id || student.id, selectedDate, 'absent')}
                             icon="X"
                             label="Absent"
                             color="bg-error"

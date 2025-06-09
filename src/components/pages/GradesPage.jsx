@@ -15,9 +15,9 @@ function GradesPage() {
     setLoading(true);
     setError(null);
     try {
-      const [gradesData, studentsData] = await Promise.all([
-        gradeService.getGrades(),
-        studentService.getStudents(),
+const [gradesData, studentsData] = await Promise.all([
+        gradeService.getAll(),
+        studentService.getAll(),
       ]);
       setGrades(gradesData);
       setStudents(studentsData);
@@ -34,9 +34,9 @@ function GradesPage() {
     fetchData();
   }, [fetchData]);
 
-  const getStudentName = (studentId) => {
-    const student = students.find(s => s.id === studentId);
-    return student ? student.name : 'Unknown Student';
+const getStudentName = (studentId) => {
+    const student = students.find(s => s.Id === studentId || s.student_id === studentId);
+    return student ? (student.Name || `${student.first_name || ''} ${student.last_name || ''}`).trim() : 'Unknown Student';
   };
 
   return (

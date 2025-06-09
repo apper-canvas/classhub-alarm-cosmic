@@ -13,7 +13,7 @@ function StudentsPage() {
     setLoading(true);
     setError(null);
     try {
-      const data = await studentService.getStudents();
+const data = await studentService.getAll();
       setStudents(data);
     } catch (err) {
       setError('Failed to fetch student data.');

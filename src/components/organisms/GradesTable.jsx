@@ -3,8 +3,8 @@ import Input from '@/components/atoms/Input';
 
 const GradesTable = ({ grades, students, getStudentName, searchQuery, setSearchQuery, loading, error }) => {
   const filteredGrades = grades.filter(grade => {
-    const studentName = getStudentName(grade.studentId).toLowerCase();
-    const assignmentName = grade.assignment.toLowerCase();
+    const studentName = getStudentName(grade.student_id || grade.studentId).toLowerCase();
+    const assignmentName = (grade.assignment || '').toLowerCase();
     const query = searchQuery.toLowerCase();
 
     return studentName.includes(query) || assignmentName.includes(query);
@@ -50,19 +50,19 @@ const GradesTable = ({ grades, students, getStudentName, searchQuery, setSearchQ
               </tr>
             </thead>
             <tbody>
-              {filteredGrades.map((grade) => (
-                <tr key={grade.id}>
+{filteredGrades.map((grade) => (
+                <tr key={grade.Id || grade.id}>
                   <td className="px-5 py-5 border-b border-surface-200 bg-white text-sm">
-                    <p className="text-surface-900 whitespace-no-wrap">{getStudentName(grade.studentId)}</p>
+                    <p className="text-surface-900 whitespace-no-wrap">{getStudentName(grade.student_id || grade.studentId)}</p>
                   </td>
                   <td className="px-5 py-5 border-b border-surface-200 bg-white text-sm">
-                    <p className="text-surface-900 whitespace-no-wrap">{grade.assignment}</p>
+                    <p className="text-surface-900 whitespace-no-wrap">{grade.assignment || 'N/A'}</p>
                   </td>
                   <td className="px-5 py-5 border-b border-surface-200 bg-white text-sm">
-                    <p className="text-surface-900 whitespace-no-wrap">{grade.score}</p>
+                    <p className="text-surface-900 whitespace-no-wrap">{grade.score || 'N/A'}</p>
                   </td>
                   <td className="px-5 py-5 border-b border-surface-200 bg-white text-sm">
-                    <p className="text-surface-900 whitespace-no-wrap">{grade.date}</p>
+                    <p className="text-surface-900 whitespace-no-wrap">{grade.date || 'N/A'}</p>
                   </td>
                 </tr>
               ))}

@@ -18,7 +18,7 @@ const Dashboard = () => {
       setLoading(true);
       setError(null);
       try {
-        const [students, attendance, grades] = await Promise.all([
+const [students, attendance, grades] = await Promise.all([
           studentService.getAll(),
           attendanceService.getAll(),
           gradeService.getAll()

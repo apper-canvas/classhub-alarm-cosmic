@@ -46,17 +46,17 @@ const AttendanceTable = ({ attendance, filterDate, setFilterDate, loading, error
               </tr>
             </thead>
             <tbody>
-              {filteredAttendance.map((record) => (
-                <tr key={`${record.studentId}-${record.date}`}>
+{filteredAttendance.map((record) => (
+                <tr key={`${record.student_id || record.studentId}-${record.date}`}>
                   <td className="px-5 py-5 border-b border-surface-200 bg-white text-sm">
-                    <p className="text-surface-900 whitespace-no-wrap">{record.studentId}</p>
+                    <p className="text-surface-900 whitespace-no-wrap">{record.student_id || record.studentId}</p>
                   </td>
                   <td className="px-5 py-5 border-b border-surface-200 bg-white text-sm">
                     <p className="text-surface-900 whitespace-no-wrap">{record.date}</p>
                   </td>
                   <td className="px-5 py-5 border-b border-surface-200 bg-white text-sm">
-                    <span className={`relative inline-block px-3 py-1 font-semibold leading-tight ${record.status === 'Present' ? 'text-green-900' : 'text-red-900'}`}>
-                      <span aria-hidden className={`absolute inset-0 opacity-50 rounded-full ${record.status === 'Present' ? 'bg-green-200' : 'bg-red-200'}`}></span>
+                    <span className={`relative inline-block px-3 py-1 font-semibold leading-tight ${record.status === 'present' ? 'text-green-900' : record.status === 'absent' ? 'text-red-900' : 'text-yellow-900'}`}>
+                      <span aria-hidden className={`absolute inset-0 opacity-50 rounded-full ${record.status === 'present' ? 'bg-green-200' : record.status === 'absent' ? 'bg-red-200' : 'bg-yellow-200'}`}></span>
                       <span className="relative">{record.status}</span>
                     </span>
                   </td>
